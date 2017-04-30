@@ -1,5 +1,6 @@
 package macPackage;
 
+import Model.MongoDB;
 import Model.Stock;
 
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ public class StockPicker {
     public List<Stock> basicAlgorithm(Date inceptionDate)
     {
 
-        List<Stock> stockList=new ArrayList<Stock>();
+        List<Stock> stockList= MongoDB.getActiveStockbyDate(inceptionDate);
+
         return stockList;
     }
 
