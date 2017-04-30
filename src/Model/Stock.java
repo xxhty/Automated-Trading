@@ -3,8 +3,10 @@ package Model;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
+import sun.util.resources.cldr.aa.CalendarData_aa_DJ;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,13 +18,13 @@ public class Stock {
     {
         this.ticker=ticker;
     }
-    public BigDecimal getPrice(Date theDay)
+    public BigDecimal getPrice(Calendar theDay)
     {
         return MongoDB.getStockPrice(ticker,theDay);
 
 
     }
-    public double calculateReturn(Date start,Date end)
+    public double calculateReturn(Calendar start,Calendar end)
     {
         return MongoDB.getStockPrice(ticker,end).divide(MongoDB.getStockPrice(ticker,start)).subtract(new BigDecimal("1")).doubleValue();
     }

@@ -14,6 +14,6 @@ public class Main {
         dateCalendar.set(Calendar.MONTH,1);
         dateCalendar.set(Calendar.DAY_OF_MONTH,1);
         System.out.println(dateCalendar.getTime());
-       MongoDB.getStockPrice("AAPL",dateCalendar.getTime());
+       MongoDB.getStockPrice("ROST",dateCalendar);
     }
 }
