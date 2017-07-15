@@ -21,12 +21,12 @@ import java.util.List;
  */
 public class MongoDB {
     MongoClient mongoClient = new MongoClient();
-    public static List<Stock> getActiveStockbyDate(Date inceptionDate)
+    public static List<Stock> getActiveStockbyDate(Calendar inceptionDate)
     {
 
         return new ArrayList<Stock>();
     }
-    public static BigDecimal getStockPrice(String ticker, Date inceptionDate)
+    public static BigDecimal getStockPrice(String ticker, Date d)
     {
         MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017/AutomatedTrading");
         MongoClient mongoClient = new MongoClient(connectionString);

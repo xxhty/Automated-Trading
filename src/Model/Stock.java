@@ -18,15 +18,19 @@ public class Stock {
     {
         this.ticker=ticker;
     }
-    public BigDecimal getPrice(Date theDay)
+    public BigDecimal getPrice(Date d)
     {
-        return MongoDB.getStockPrice(ticker,theDay);
+        return MongoDB.getStockPrice(ticker,d);
 
 
     }
-    public double calculateReturn(Date start,Date end)
+    public double calculatePerformance(Date start, Date end)
     {
         return MongoDB.getStockPrice(ticker,end).divide(MongoDB.getStockPrice(ticker,start)).subtract(new BigDecimal("1")).doubleValue();
+    }
+    public String getTicker()
+    {
+        return ticker;
     }
 
 }
