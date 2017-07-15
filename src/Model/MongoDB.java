@@ -8,6 +8,7 @@ import org.bson.Document;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,11 +17,11 @@ import java.util.List;
  */
 public class MongoDB {
     MongoClient mongoClient = new MongoClient();
-    public static List<Stock> getActiveStockbyDate(Date inceptionDate)
+    public static List<Stock> getActiveStockbyDate(Calendar inceptionDate)
     {
         return new ArrayList<Stock>();
     }
-    public static BigDecimal getStockPrice(String ticker, Date inceptionDate)
+    public static BigDecimal getStockPrice(String ticker, Date d)
     {
         MongoClientURI connectionString = new MongoClientURI("mongodb://tnhninc:E4VFGKgEZR3qWbVc@primarycluster-shard-00-00-0ctky.mongodb.net:27017,primarycluster-shard-00-01-0ctky.mongodb.net:27017,primarycluster-shard-00-02-0ctky.mongodb.net:27017/StockPrices?ssl=true&replicaSet=PrimaryCluster-shard-0&authSource=admin");
         MongoClient mongoClient = new MongoClient(connectionString);
