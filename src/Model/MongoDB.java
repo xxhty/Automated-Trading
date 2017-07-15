@@ -10,6 +10,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,22 +23,25 @@ public class MongoDB {
     MongoClient mongoClient = new MongoClient();
     public static List<Stock> getActiveStockbyDate(Date inceptionDate)
     {
+
         return new ArrayList<Stock>();
     }
-    public static BigDecimal getStockPrice(String ticker, Calendar inceptionDate)
+    public static BigDecimal getStockPrice(String ticker, Date inceptionDate)
     {
-        MongoClientURI connectionString = new MongoClientURI("mongodb://tnhninc:E4VFGKgEZR3qWbVc@primarycluster-shard-00-00-0ctky.mongodb.net:27017,primarycluster-shard-00-01-0ctky.mongodb.net:27017,primarycluster-shard-00-02-0ctky.mongodb.net:27017/StockPrices?ssl=true&replicaSet=PrimaryCluster-shard-0&authSource=admin");
+        MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017/AutomatedTrading");
         MongoClient mongoClient = new MongoClient(connectionString);
-        MongoDatabase database = mongoClient.getDatabase("StockPrices");
-        MongoCollection<Document> collection = database.getCollection("SP500");
+        MongoDatabase database = mongoClient.getDatabase("AutomatedTrading");
+        MongoCollection<Document> collection = database.getCollection("Stocks");
         Document obj = new Document();
-        obj.append("symbol",  ticker);
-        //obj.append("date", inceptionDate);
+        obj.append("ticker",  ticker);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        obj.append("date", sdf.format(inceptionDate));
+
         FindIterable<Document> result = collection.find(obj);
         if(result != null) {
             Document myDoc = result.first();
             System.out.println(myDoc.toJson());
-            return new BigDecimal(myDoc.getDouble("open"));
+            return new BigDecimal(BigDecimal.valueOf(myDoc.getString("open")));
         }
 
         return new BigDecimal("0.0");
