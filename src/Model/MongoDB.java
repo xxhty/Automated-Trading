@@ -21,12 +21,25 @@ import java.util.List;
  */
 public class MongoDB {
     MongoClient mongoClient = new MongoClient();
-    public static List<Stock> getActiveStockbyDate(Calendar inceptionDate)
+    public static ArrayList<Stock> getActiveStockbyDate(Date inceptionDate)
     {
+        MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017/AutomatedTrading");
+        MongoClient mongoClient = new MongoClient(connectionString);
+        MongoDatabase database = mongoClient.getDatabase("AutomatedTrading");
+        MongoCollection<Document> collection = database.getCollection("Stocks");
+        Document queryObj = new Document();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        queryObj.append("date", sdf.format(inceptionDate));
 
-        return new ArrayList<Stock>();
+        FindIterable<Document> result = collection.find(queryObj);
+        ArrayList<Stock> ret = new ArrayList<>();
+        for(Document stock : result){
+            Stock s = new Stock(stock.getString("ticker"));
+            ret.add(s);
+        }
+        return ret;
     }
-    public static BigDecimal getStockPrice(String ticker, Date d)
+    public static BigDecimal getStockPrice(String ticker, Date inceptionDate)
     {
         MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017/AutomatedTrading");
         MongoClient mongoClient = new MongoClient(connectionString);
@@ -41,7 +54,7 @@ public class MongoDB {
         if(result != null) {
             Document myDoc = result.first();
             System.out.println(myDoc.toJson());
-            return new BigDecimal(BigDecimal.valueOf(myDoc.getString("open")));
+            return new BigDecimal(myDoc.getString("open"));
         }
 
         return new BigDecimal("0.0");
