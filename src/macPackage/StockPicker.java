@@ -12,7 +12,7 @@ public class StockPicker {
     public List<Stock> top50(Calendar inceptionDate)
     {
 
-        List<Stock> stockList= MongoDB.getActiveStockbyDate(inceptionDate);
+        List<Stock> stockList= MongoDB.getActiveStockbyDate(inceptionDate.getTime());
         List<Stock> top50= new LinkedList<Stock>();
         TreeMap<Double,Stock> stockPerformanceTM=new TreeMap<Double,Stock>();
         for (Stock s: stockList)
