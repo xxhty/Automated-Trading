@@ -1,30 +1,35 @@
 package macPackage;
 
-import Model.MongoDB;
-import Model.Stock;
+import Model.*;
 
+import java.io.Console;
 import java.util.*;
 
 /**
  * Created by TonyHuang on 4/29/17.
  */
 public class StockPicker {
-    public List<Stock> top50(Calendar inceptionDate)
+    private IDataRepository repo;
+    public StockPicker(IDataRepository repo){
+        this.repo = repo;
+    }
+    public List<ISecurity> top50(Calendar inceptionDate)
     {
+        inceptionDate.add(Calendar.MONTH, -13);
+        Date start = inceptionDate.getTime();
+        inceptionDate.add(Calendar.MONTH, 12);
+        Date end = inceptionDate.getTime();
 
-        List<Stock> stockList= MongoDB.getActiveStockbyDate(inceptionDate.getTime());
-        List<Stock> top50= new LinkedList<Stock>();
-        TreeMap<Double,Stock> stockPerformanceTM=new TreeMap<Double,Stock>();
-        for (Stock s: stockList)
-        {
-            inceptionDate.add(Calendar.MONTH,-13);
-            Date start=inceptionDate.getTime();
-            inceptionDate.add(Calendar.MONTH,14);
-            Date end=inceptionDate.getTime();
-
-            stockPerformanceTM.put(s.calculatePerformance(start,end),s);
-
-
+        List<ISecurity> stockList= repo.getActiveStocksByDate(inceptionDate.getTime());
+        List<ISecurity> top50= new LinkedList<ISecurity>();
+        TreeMap<Double,ISecurity> stockPerformanceTM=new TreeMap<Double,ISecurity>(Comparator.reverseOrder());
+        PerformanceCalculator perfcalc = new PerformanceCalculator();
+        try {
+            for (ISecurity s : stockList) {
+                stockPerformanceTM.put(perfcalc.calculate(s, start, end), s);
+            }
+        }
+        catch (Exception ex){
 
         }
         Iterator it = stockPerformanceTM.entrySet().iterator();
@@ -32,7 +37,7 @@ public class StockPicker {
         while (it.hasNext() && count>0) {
 
             Map.Entry pair = (Map.Entry)it.next();
-
+            System.out.println(((Stock)pair.getValue()).getTicker() + ": " + pair.getKey());
             top50.add((Stock)pair.getValue());
            count--;
         }

@@ -19,9 +19,10 @@ import java.util.List;
 /**
  * Created by TonyHuang on 4/29/17.
  */
+
 public class MongoDB {
     MongoClient mongoClient = new MongoClient();
-    public static ArrayList<Stock> getActiveStockbyDate(Date inceptionDate)
+    /*public static ArrayList<Stock> getActiveStockbyDate(Date inceptionDate)
     {
         MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017/AutomatedTrading");
         MongoClient mongoClient = new MongoClient(connectionString);
@@ -58,6 +59,6 @@ public class MongoDB {
         }
 
         return new BigDecimal("0.0");
-    }
+    }*/
 
 }
