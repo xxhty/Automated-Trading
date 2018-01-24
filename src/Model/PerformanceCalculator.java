@@ -2,16 +2,18 @@ package Model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.List;
+
 public class PerformanceCalculator {
-    public PerformanceCalculator(){}
+    private List<ISecurityFeature> featureList;
+    public PerformanceCalculator(List<ISecurityFeature> featureList){
+        this.featureList = featureList;
+    }
     public double calculate(ISecurity s, Date start, Date end){
-        BigDecimal endPrice = s.getPrice(end);
-        BigDecimal startPrice = s.getPrice(start);
-        if(startPrice == null || endPrice == null){
-            return -1;
+        double ret = 0;
+        for(ISecurityFeature f: featureList){
+            ret += f.getWeight() * f.calculate(s);
         }
-        BigDecimal ratio = endPrice.divide(startPrice, RoundingMode.FLOOR);
-        BigDecimal performance = ratio.subtract(new BigDecimal("1"));
-        return performance.doubleValue();
+        return ret;
     }
 }
