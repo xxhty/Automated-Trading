@@ -15,18 +15,18 @@ public class StockPicker {
     }
     public List<ISecurity> top50(Calendar inceptionDate)
     {
-        inceptionDate.add(Calendar.MONTH, -13);
-        Date start = inceptionDate.getTime();
-        inceptionDate.add(Calendar.MONTH, 12);
-        Date end = inceptionDate.getTime();
 
         List<ISecurity> stockList= repo.getActiveStocksByDate(inceptionDate.getTime());
         List<ISecurity> top50= new LinkedList<ISecurity>();
         TreeMap<Double,ISecurity> stockPerformanceTM=new TreeMap<Double,ISecurity>(Comparator.reverseOrder());
-        PerformanceCalculator perfcalc = new PerformanceCalculator();
+        ArrayList<ISecurityFeature> featureList = new ArrayList<ISecurityFeature>();
+        featureList.add(new XDaysPerformance(0.5, 365));
+        featureList.add(new XDaysPerformance(0.5, 30));
+
+        PerformanceCalculator perfcalc = new PerformanceCalculator(featureList);
         try {
             for (ISecurity s : stockList) {
-                stockPerformanceTM.put(perfcalc.calculate(s, start, end), s);
+                stockPerformanceTM.put(perfcalc.calculate(s, inceptionDate.getTime()), s);
             }
         }
         catch (Exception ex){

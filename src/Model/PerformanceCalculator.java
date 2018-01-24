@@ -9,10 +9,10 @@ public class PerformanceCalculator {
     public PerformanceCalculator(List<ISecurityFeature> featureList){
         this.featureList = featureList;
     }
-    public double calculate(ISecurity s, Date start, Date end){
+    public double calculate(ISecurity s, Date inceptionDate){
         double ret = 0;
         for(ISecurityFeature f: featureList){
-            ret += f.getWeight() * f.calculate(s);
+            ret += f.getWeight() * f.calculate(s, inceptionDate);
         }
         return ret;
     }
